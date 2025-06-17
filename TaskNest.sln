@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskNest.API", "TaskNest.API\TaskNest.API.csproj", "{8EE302C2-4224-43D1-AA70-D8DA7555E996}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "tasknest_frontend", "TaskNest_Frontend\tasknest_frontend.esproj", "{BBF2F1B9-F58B-4AB0-AA59-FAC24E0E410A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Projektmappenelemente", "Projektmappenelemente", "{A4990F5A-651E-49BB-82C9-54653CF78820}"
+	ProjectSection(SolutionItems) = preProject
+		Notizen.txt = Notizen.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

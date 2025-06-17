@@ -1,0 +1,87 @@
+﻿Dependency Injection bedeutet auf Deutsch „Abhängigkeits-Einspeisung“.
+Es ist ein Prinzip, bei dem ein Objekt (z. B. dein Controller) die Objekte, die es braucht (seine Abhängigkeiten), nicht selbst erstellt,
+sondern sie “von außen” bekommt – also injected werden.
+
+Warum macht man das?
+
+    Trennung der Verantwortlichkeiten: Dein Controller weiß was er machen will, aber nicht wie er z. B. an die Datenbank kommt.
+
+    Testbarkeit: Du kannst dem Controller für Tests ein “Fake”-Objekt geben, ohne echte Datenbank.
+
+    Wartbarkeit & Flexibilität: Du kannst die Implementierung der Abhängigkeit (z. B. anderer DbContext, anderer Service) jederzeit tauschen.
+
+
+    Praxis: In ASP.NET Core
+
+    ASP.NET Core erstellt für jede HTTP-Anfrage den Controller und übergibt ihm automatisch die Abhängigkeiten (z. B. AppDbContext) aus dem sogenannten DI-Container.
+
+    Du registrierst deine Abhängigkeit (DbContext) in Program.cs:
+
+builder.Services.AddDbContext<AppDbContext>(...)
+
+Der Controller muss nur im Konstruktor einen Parameter des gewünschten Typs (hier: AppDbContext) annehmen – und ASP.NET Core gibt ihm die Instanz automatisch.
+
+
+1. Validierung ("Validation")
+Was bedeutet Validierung?
+
+Validierung prüft, ob die Daten, die ein User (z. B. dein Frontend) an deine API schickt, „sinnvoll“ und „vollständig“ sind.
+
+Beispiele:
+
+    Ist das Aufgabenfeld „Title“ ausgefüllt?
+
+    Ist das E-Mail-Feld eine gültige E-Mail?
+
+    Ist ein Datum im erlaubten Bereich?
+
+Warum ist das wichtig?
+
+    Verhindert Fehler durch falsche oder fehlende Daten
+
+    Schutz gegen unerwartetes Verhalten oder Datenbank-Fehler
+
+    Verbessert die User Experience und Sicherheit
+
+2. Authentifizierung ("Authentication")
+Was bedeutet Authentifizierung?
+
+Authentifizierung prüft: Wer bist du?
+Nur eingeloggte Nutzer dürfen Daten sehen, anlegen, ändern oder löschen.
+
+Ohne Authentifizierung:
+Jeder (auch Fremde/Hacker) kann die API voll benutzen → Das willst du nicht!
+Moderne Methoden in ASP.NET Core
+A) JSON Web Token (JWT) – Standard bei modernen Web-APIs
+
+Ablauf:
+
+    User loggt sich mit E-Mail/Passwort ein (/api/auth/login)
+
+    Backend prüft die Daten – wenn korrekt, gibt es ein JWT-Token zurück.
+
+    Das Frontend speichert das Token und schickt es bei jedem API-Request im Authorization-Header mit.
+
+    Das Backend prüft bei jedem Request das Token – ist es gültig, darf der User weiterarbeiten.
+
+Warum JWT?
+
+    Stateless: Das Backend muss nichts speichern, alles steckt im Token.
+
+    Branchenstandard: Jedes große Webprojekt nutzt das.
+
+B) ASP.NET Identity
+
+Das ist ein sehr mächtiges, komplettes User-Management-Framework (mit Passwort-Hashing, Rollen, Passwort vergessen, usw.) –
+Für kleine Projekte reicht oft aber eine eigene schlanke JWT-Authentifizierung.
+
+3. Autorisierung ("Authorization")
+
+Das ist die Frage: "Was darf der User?"
+(Z. B. nur eigene Aufgaben sehen? Aufgaben anderer Teams? Admin-Funktionen?)
+
+Umsetzen in ASP.NET Core:
+
+    Mit [Authorize(Roles="Admin")] oder [Authorize(Policy="...")]
+
+Für das Grundprojekt reicht erstmal das „nur eingeloggte User dürfen ...“
